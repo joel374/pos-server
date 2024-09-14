@@ -1,4 +1,5 @@
 import { HttpException } from '@nestjs/common';
+import { Pagination, PaginationOptions } from './pagination.helper';
 // import { Pagination, PaginationOptions } from './pagination.helper';
 
 export class Response {
@@ -13,9 +14,9 @@ export class Response {
 
 export const response = (message: string, data: any = null) => new Response(message, data);
 
-// export const responsePage = (results: any[], total: number, paginationOptions: PaginationOptions) => {
-//   return new Pagination(results, total, paginationOptions);
-// };
+export const responsePage = (results: any[], total: number, paginationOptions: PaginationOptions) => {
+  return new Pagination(results, total, paginationOptions);
+};
 
 // export const responsePageEmpty = (paginationOptions: PaginationOptions) => {
 //   return new Pagination([], 0, paginationOptions);

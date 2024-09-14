@@ -5,6 +5,8 @@ import { DatabaseModule } from 'modules/databases/database.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { ConfigModule } from 'modules/config/config.module';
+import { ProductService } from './services/product.service';
+import { ProductController } from './controllers/product.controller';
 
 @Module({
   imports: [
@@ -15,8 +17,8 @@ import { ConfigModule } from 'modules/config/config.module';
     }),
     ConfigModule,
   ],
-  controllers: [AuthController],
-  providers: [AuthService],
+  controllers: [AuthController, ProductController],
+  providers: [AuthService, ProductService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -26,6 +28,6 @@ export class AppModule implements NestModule {
         path: 'auth/loginAccount',
         method: RequestMethod.POST,
       })
-      .forRoutes(AuthController);
+      .forRoutes(AuthController, ProductController);
   }
 }

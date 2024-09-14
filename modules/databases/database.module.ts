@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule } from 'modules/config/config.module';
 import { ConfigService } from 'modules/config/config.service';
+import { Tmdproduct } from 'src/models/tmdproduct';
 import { Tmduser } from 'src/models/tmduser';
 
 @Module({
@@ -16,7 +17,7 @@ import { Tmduser } from 'src/models/tmduser';
           username: configService.get('DB_USERNAME'),
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_DATABASE'),
-          entities: [Tmduser],
+          entities: [Tmduser, Tmdproduct],
         };
       },
       inject: [ConfigService],

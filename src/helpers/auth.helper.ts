@@ -1,9 +1,10 @@
 import { connections } from 'src/main';
+import { Tmdproduct } from 'src/models/tmdproduct';
 import { Tmduser } from 'src/models/tmduser';
-import { DataSource } from 'typeorm';
+import { Connection } from 'typeorm';
 
 export async function getAuth(id: number): Promise<Auth> {
-  const conn = new DataSource({
+  const conn = new Connection({
     type: 'mysql',
     // options: { useUTC: true },
     // requestTimeout: 300000,
@@ -12,7 +13,7 @@ export async function getAuth(id: number): Promise<Auth> {
     username: 'root',
     password: 'password',
     database: 'pos-app',
-    entities: [Tmduser],
+    entities: [Tmduser, Tmdproduct],
   });
 
   await conn.initialize();
@@ -27,10 +28,10 @@ export async function getAuth(id: number): Promise<Auth> {
 }
 
 export class Auth {
-  conn: DataSource;
+  conn: Connection;
   userData: UserData;
 
-  constructor(conn: DataSource, userData: UserData) {
+  constructor(conn: Connection, userData: UserData) {
     this.conn = conn;
     this.userData = userData;
   }
