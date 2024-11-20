@@ -3,6 +3,7 @@ import { Auth } from 'src/helpers/auth.helper';
 import {
   AddProductValidator,
   DeleteProductValidator,
+  GetProductByCodeValidator,
   GetProductValidator,
   UpdateProductValidator,
 } from 'src/validators/product.validator';
@@ -20,10 +21,35 @@ export class ProductService {
     try {
       const qProduct = queryRunner.manager.getRepository(Tmdproduct).createQueryBuilder('tmdproduct');
 
-      if (params.search.trim() !== '') {
+      if (params.search && params.search.trim() !== '') {
         qProduct.where('tmdproduct.productName LIKE :productName', { productName: `%${params.search}%` });
       }
       const result = await qProduct.skip(pagination.skip).take(pagination.limit).getManyAndCount();
+
+      await queryRunner.commitTransaction();
+      return result;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async getProductByCode(auth: Auth, params: GetProductByCodeValidator) {
+    const queryRunner = auth.conn.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const result = await queryRunner.manager
+        .getRepository(Tmdproduct)
+        .createQueryBuilder('tmdproduct')
+        .where('tmdproduct.productCode = :productCode', { productCode: params.productCode })
+        .getOne();
+
+      if (!result) {
+        throw new Error('Product not found. Please check the productCode and try again.');
+      }
 
       await queryRunner.commitTransaction();
       return result;

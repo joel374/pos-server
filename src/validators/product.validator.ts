@@ -46,3 +46,9 @@ export class GetProductValidator {
   @IsString()
   search: string;
 }
+
+export class GetProductByCodeValidator {
+  @IsNotEmpty()
+  @IsString()
+  productCode: string;
+}

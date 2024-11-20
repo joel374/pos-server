@@ -6,6 +6,7 @@ import { ProductService } from 'src/services/product.service';
 import {
   AddProductValidator,
   DeleteProductValidator,
+  GetProductByCodeValidator,
   GetProductValidator,
   UpdateProductValidator,
 } from 'src/validators/product.validator';
@@ -21,6 +22,17 @@ export class ProductController {
       const pagination = createPaginationOptions(req);
       const [result, total] = await this.productService.getProduct(auth, pagination, body);
       return responsePage(result, total, pagination);
+    } catch (error) {
+      return responseError(error.message);
+    }
+  }
+
+  @Get('getProductByCode')
+  async getProductByCode(@Req() req, @Body() body: GetProductByCodeValidator) {
+    try {
+      const auth: Auth = req.auth;
+      const result = await this.productService.getProductByCode(auth, body);
+      return response('Product found successfully.', result);
     } catch (error) {
       return responseError(error.message);
     }
