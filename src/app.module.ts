@@ -7,6 +7,8 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
 import { ConfigModule } from 'modules/config/config.module';
 import { ProductService } from './services/product.service';
 import { ProductController } from './controllers/product.controller';
+import { TransactionController } from './controllers/transaction.controller';
+import { TransactionService } from './services/transaction.service';
 
 @Module({
   imports: [
@@ -17,8 +19,8 @@ import { ProductController } from './controllers/product.controller';
     }),
     ConfigModule,
   ],
-  controllers: [AuthController, ProductController],
-  providers: [AuthService, ProductService],
+  controllers: [AuthController, ProductController, TransactionController],
+  providers: [AuthService, ProductService, TransactionService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -28,6 +30,6 @@ export class AppModule implements NestModule {
         path: 'auth/loginAccount',
         method: RequestMethod.POST,
       })
-      .forRoutes(AuthController, ProductController);
+      .forRoutes(AuthController, ProductController, TransactionController);
   }
 }

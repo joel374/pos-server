@@ -20,6 +20,9 @@ export class Tmdproduct {
   @Column({ name: 'price' })
   price: number;
 
+  @Column({ name: 'discounts' })
+  discounts: number;
+
   @Column({ name: 'created_by' })
   craetedBy: string;
 

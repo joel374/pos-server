@@ -14,6 +14,9 @@ export class AddProductValidator {
   @IsNotEmpty()
   @IsNumber()
   price: number;
+  @IsOptional()
+  @IsNumber()
+  discounts: number;
 }
 
 export class UpdateProductValidator {
@@ -33,6 +36,9 @@ export class UpdateProductValidator {
   @IsNotEmpty()
   @IsNumber()
   price: number;
+  @IsNotEmpty()
+  @IsNumber()
+  discounts: number;
 }
 
 export class DeleteProductValidator {
